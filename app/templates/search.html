@@ -1,0 +1,30 @@
+<html>
+<head>
+    <title>Search | Motoren</title>
+</head>
+<body>
+    <table border=1>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Code</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th></th>
+        </tr>
+        {% for item in items %}
+            <tr>
+                <td>{{ item['name'] }}</td>
+                <td>{{ item['description'] }}</td>
+                <td>{{ item['code'] }}</td>
+                <td>{{ item['price'] }}</td>
+                <td>{{ item['stock'] }}</td>
+                <td>
+                    Quantity: <input type="text" size="4">
+                    <button type="submit">Add to transaction</button>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
