@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import MySQLdb as mysql
 import MySQLdb.cursors
+import arrow
 
 from settings import HOST, USER, PASSWORD, DATABASE
 
@@ -22,9 +23,9 @@ class Db:
 
     def search_inventory(self, q):
         q = "%" + q + "%"
-        query = """SELECT * from inventories where name like %s or description like %s"""
+        query = """SELECT * from inventories where name like %s or description like %s or supplier like %s"""
 
-        self.cursor.execute(query, (q, q))
+        self.cursor.execute(query, (q, q, q))
         self.db.close()
 
         results = self.cursor.fetchall()
@@ -40,3 +41,33 @@ class Db:
         results = self.cursor.fetchall()
 
         return list(results)
+
+    def add_transaction(self, srp_total, selling_total):
+        query = """INSERT INTO transactions (date, total, actual)
+                    VALUES (%s, %s, %s)"""
+
+        datetime = arrow.now().format('YYYY-MM-DD HH:mm:ss')
+
+        self.cursor.execute(query, (datetime, srp_total, selling_total))
+        transaction_id = self.cursor.lastrowid
+
+        self.db.commit()
+        self.db.close()
+
+        return transaction_id
+
+    def add_sales(self, sales):
+        query = """INSERT INTO sales (inventory_id, quantity, price, actual, transaction_id)
+                    VALUES (%s, %s, %s, %s, %s)"""
+
+        self.cursor.executemany(query, sales)
+        self.db.commit()
+        self.db.close()
+
+    def update_inventory(self, inventories):
+        query = """UPDATE inventories SET stock = %s where id = %s"""
+
+        self.cursor.executemany(query, inventories)
+        self.db.commit()
+        self.db.close()
+

@@ -1,11 +1,25 @@
-<html>
-<head>
-    <title>Motoren</title>
-</head>
-<body>
-    <form method="GET" action="{{ url_for('search_inventory') }}">
-        <input type="text" name="q">
-        <button type="Submit">Search</button>
-    </form>
-</body>
-</html>
+{% extends "base.html" %}
+{% block head %}
+    <title>Welcome!</title>
+    {{ super() }}
+{% endblock %}
+
+{% block body %}
+    {{ super() }}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-offset-2 col-xs-8">
+                <h1>Search for item:</h1>
+                <form method="GET" action="{{ url_for('search_inventory') }}">
+                    <div class="input-group">
+                      <input type="text" class="form-control" placeholder="Search" name="q">
+                      <span class="input-group-btn">
+                        <button class="btn btn-default" type="submit">Search</button>
+                      </span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

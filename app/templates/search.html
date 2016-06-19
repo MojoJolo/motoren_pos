@@ -1,30 +1,56 @@
-<html>
-<head>
-    <title>Search | Motoren</title>
-</head>
-<body>
-    <table border=1>
-        <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Code</th>
-            <th>Price</th>
-            <th>Stock</th>
-            <th></th>
-        </tr>
-        {% for item in items %}
-            <tr>
-                <td>{{ item['name'] }}</td>
-                <td>{{ item['description'] }}</td>
-                <td>{{ item['code'] }}</td>
-                <td>{{ item['price'] }}</td>
-                <td>{{ item['stock'] }}</td>
-                <td>
-                    Quantity: <input type="text" size="4">
-                    <button type="submit">Add to transaction</button>
-                </td>
-            </tr>
-        {% endfor %}
-    </table>
-</body>
-</html>
+{% extends "base.html" %}
+{% block head %}
+    <title>Search - Motoren</title>
+    {{ super() }}
+{% endblock %}
+
+{% block body %}
+    {{ super() }}
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-hover table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Supplier</th>
+                            <th>Description</th>
+                            <th>Code</th>
+                            <th>Price</th>
+                            <th>Stock</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    {% for item in items %}
+                        <tr>
+                            <td>{{ item['name'] }}</td>
+                            <td>{{ item['supplier'] }}</td>
+                            <td>{{ item['description'] }}</td>
+                            <td>{{ item['code'] }}</td>
+                            <td>{{ item['price'] }}</td>
+                            <td>{{ item['stock'] }}</td>
+                            <td>
+                                <form method="POST" action="{{ url_for('add_sale') }}" class="form-inline">
+                                    <input type="hidden" value="{{ item['id'] }}" name="id">
+                                    <input type="hidden" value="{{ item['name'] }}" name="name">
+                                    <input type="hidden" value="{{ item['description'] }}" name="description">
+                                    <input type="hidden" value="{{ item['code'] }}" name="code">
+                                    <input type="hidden" value="{{ item['price'] }}" name="price">
+                                    <input type="hidden" value="{{ item['supplier'] }}" name="supplier">
+                                    <input type="hidden" value="{{ item['stock'] }}" name="stock">
+
+                                    <div class="form-group">
+                                        <label>Quantity:</label>
+                                        <input type="text" class="form-control" name="quantity" value="1" size="2">
+                                    </div>
+                                    <button class="btn btn-default" type="submit">Add</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

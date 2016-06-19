@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block head %}
+    <title>View Items - Motoren</title>
+
+    <script src="{{ url_for('static', filename='js/jquery-1.12.0.min.js') }}" charset="utf-8"></script>
+    {{ super() }}
+{% endblock %}
+
+{% block body %}
+    {{ super() }}
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <form method="POST" action="{{ url_for('checkout') }}">
+                    <table class="table table-hover table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Item ID</th>
+                                <th>Name</th>
+                                <th>Supplier</th>
+                                <th>Description</th>
+                                <th>Code</th>
+                                <th>Current stock</th>
+                                <th>Quantity</th>
+                                <th>SRP</th>
+                                <th>Selling Price</th>
+                            </tr>
+                        </thead>
+                        {% if 'sales' in session %}
+                            {% for item in session['sales'].values() %}
+                                <tr>
+                                    <td>{{ item['item_id'] }}</td>
+                                    <td>{{ item['name'] }}</td>
+                                    <td>{{ item['supplier'] }}</td>
+                                    <td>{{ item['description'] }}</td>
+                                    <td>{{ item['code'] }}</td>
+                                    <td>{{ item['stock'] }}</td>
+                                    <td>{{ item['quantity'] }}</td>
+                                    <td>
+                                        P {{ item['srp'] }}
+                                        
+                                        (P{{ item['price'] }} each)
+                                    </td>
+                                    <td>
+                                        <input type="hidden" name="id::{{ loop.index0 }}" value="{{ item['item_id'] }}">
+                                        <input type="hidden" name="stock::{{ loop.index0 }}" value="{{ item['stock'] }}">
+                                        <input type="hidden" name="quantity::{{ loop.index0 }}" value="{{ item['quantity'] }}">
+                                        <input type="hidden" name="price::{{ loop.index0 }}" value="{{ item['srp'] }}">
+                                        <input class="prices" name="actual::{{ loop.index0 }}" type="text" size="10" value="{{ item['srp'] }}">
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                    </table>
+                    {% if 'sales' in session %}
+                        {% set srp_total = session['sales'].values() | total_sale %}
+                        <strong>SRP Total:</strong> P {{ srp_total }}
+                        <br>
+                        <strong>Selling Total:</strong>
+                        <input name="selling_total" id="selling_total" type="text" size="10" value="{{ srp_total }}">
+                        <br>
+                        <input type="hidden" name="total_items" value="{{ session['sales'] | count }}">
+                        <input type="hidden" name="srp_total" value="{{ srp_total }}">
+                        <button class="btn btn-default" type="submit">Checkout</button>
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $('input.prices').change(function() {       
+            // Loop through all input's and re-calculate the total
+            var total = 0;
+
+            $('input.prices').each(function(){
+                total += parseFloat(this.value);
+            });
+
+            // Update the total
+            $('#selling_total').val(total);
+        });
+    </script>
+{% endblock %}
