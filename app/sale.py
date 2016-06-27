@@ -63,3 +63,7 @@ def add_sale():
 @app.template_filter('total_sale')
 def total_sale(sales):
     return sum([sale['srp'] for sale in sales])
+
+@app.template_filter('item_in_sale')
+def item_in_sale(sales):
+    return len(sales.keys())

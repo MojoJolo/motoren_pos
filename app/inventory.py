@@ -15,7 +15,7 @@ def add_inventory():
         try:
             price = float(request.form.get('price'))
         except:
-            return "Price is invalid!"
+            return request.form.get('price')
 
         try:
             stock = int(request.form.get('stock'))
@@ -31,11 +31,11 @@ def add_inventory():
 
             Db().add_inventory(item)
 
-            return "Success."
+            return redirect(url_for('search_inventory', q=name))
         else:
             return "Please complete required fields."
     else:
-        return "Add inventory"
+        return render_template('add.html')
 
 @app.route("/inventory/get_all", methods=['GET'])
 def get_inventories():

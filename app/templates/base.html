@@ -12,16 +12,30 @@
             <div class="navbar-header">
                 <a class="navbar-brand" href="{{ url_for('index') }}">Motoren</a>
             </div>
-            {% if request.path != '/' %}
-                <form class="navbar-form navbar-left" role="search" method="GET" action="{{ url_for('search_inventory') }}">
-                    <div class="form-group">
-                      <input type="text" class="form-control" placeholder="Search" name="q">
-                      <button type="submit" class="btn btn-default">Search</button>
-                    </div>
-                </form>
-            {% endif %}
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="{{ url_for('add_inventory') }}">Add Item</a></li>
+                <li><a href="{{ url_for('view_sale') }}">View Current Transaction ({{ session.get("sales", {}) | item_in_sale }})</a></li>
+            </ul>
         </div>
     </nav>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-offset-4 col-xs-6">
+                {% if request.path != '/' %}
+                    <form role="search" method="GET" action="{{ url_for('search_inventory') }}">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Search" name="q">
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-default">Search</button>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
     {% block body %}
     {% endblock %}
 
