@@ -6,14 +6,16 @@
     <link href="{{ url_for('static', filename='css/bootstrap-theme.min.css') }}" rel="stylesheet">
     {% endblock %}
 </head>
-<body>
+<body style="margin-bottom: 50px;">
     <nav class="navbar navbar-default">
         <div class="container">
             <div class="navbar-header">
                 <a class="navbar-brand" href="{{ url_for('index') }}">Motoren</a>
             </div>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="{{ url_for('add_inventory') }}">Add Item</a></li>
+                <li><a href="{{ url_for('add_inventory') }}">Add Item/s</a></li>
+                <li><a href="{{ url_for('view_categories') }}">Categories</a></li>
+                <li><a href="{{ url_for('view_suppliers') }}">Suppliers</a></li>
                 <li><a href="{{ url_for('view_sale') }}">View Current Transaction ({{ session.get("sales", {}) | item_in_sale }})</a></li>
             </ul>
         </div>

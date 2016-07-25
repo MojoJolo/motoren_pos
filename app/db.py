@@ -13,8 +13,8 @@ class Db:
         self.cursor = self.db.cursor()
 
     def add_inventory(self, item):
-        query = """INSERT INTO inventories (name, description, code, stock, price, supplier)
-                    VALUES (%s, %s, %s, %s, %s, %s)"""
+        query = """INSERT INTO inventories (name, description, code, stock, price, supplier, category)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s)"""
 
         self.cursor.execute(query, item)
 
@@ -33,7 +33,7 @@ class Db:
         return list(results)
 
     def get_inventories(self):
-        query = """SELECT * from inventories"""
+        query = """SELECT * from inventories order by id desc limit 50"""
 
         self.cursor.execute(query)
         self.db.close()
@@ -68,6 +68,58 @@ class Db:
         query = """UPDATE inventories SET stock = %s where id = %s"""
 
         self.cursor.executemany(query, inventories)
+        self.db.commit()
+        self.db.close()
+
+    def add_category(self, category):
+        query = """INSERT INTO  categories (name) VALUES (%s)"""
+
+        self.cursor.execute(query, [category])
+
+        self.db.commit()
+        self.db.close()
+
+    def get_categories(self):
+        query = """SELECT * from categories"""
+
+        self.cursor.execute(query)
+        self.db.close()
+
+        results = self.cursor.fetchall()
+
+        return list(results)
+
+    def delete_category(self, category_id):
+        query = """DELETE FROM categories WHERE id = %s"""
+
+        self.cursor.execute(query, [category_id])
+
+        self.db.commit()
+        self.db.close()
+
+    def add_supplier(self, supplier):
+        query = """INSERT INTO  suppliers (name) VALUES (%s)"""
+
+        self.cursor.execute(query, [supplier])
+
+        self.db.commit()
+        self.db.close()
+
+    def get_suppliers(self):
+        query = """SELECT * from suppliers"""
+
+        self.cursor.execute(query)
+        self.db.close()
+
+        results = self.cursor.fetchall()
+
+        return list(results)
+
+    def delete_supplier(self, supplier_id):
+        query = """DELETE FROM suppliers WHERE id = %s"""
+
+        self.cursor.execute(query, [supplier_id])
+
         self.db.commit()
         self.db.close()
 

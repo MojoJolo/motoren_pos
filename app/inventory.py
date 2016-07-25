@@ -8,40 +8,56 @@ from db import Db
 @app.route("/inventory/add", methods=['GET', 'POST'])
 def add_inventory():
     if request.method == 'POST':
-        name = request.form.get('name')
-        description = request.form.get('description', '')
-        code = request.form.get('code')
+        print request.form
 
-        try:
-            price = float(request.form.get('price'))
-        except:
-            return request.form.get('price')
+        request.form.get('name')
 
-        try:
-            stock = int(request.form.get('stock'))
-        except:
-            return "Stock is invalid"
+        for i in range(0, 5):
+            name = request.form.get('name-{}'.format(i))
 
-        supplier = request.form.get('supplier', '')
+            if not name:
+                continue
 
-        if name and code and price and stock:
-            item = (
-                name, description, code, stock, price, supplier
-            )
+            description = request.form.get('description-{}'.format(i), '')
+            code = request.form.get('code-{}'.format(i))
 
-            Db().add_inventory(item)
+            try:
+                price = float(request.form.get('price-{}'.format(i)))
+            except:
+                print "Price is invalid"
+                continue
 
-            return redirect(url_for('search_inventory', q=name))
-        else:
-            return "Please complete required fields."
+            try:
+                stock = int(request.form.get('stock-{}'.format(i)))
+            except:
+                print "Stock is invalid"
+                continue
+
+            supplier = request.form.get('supplier', '')
+            category = request.form.get('category', '')
+
+            if name and code and price and stock and category:
+                item = (
+                    name, description, code, stock, price, supplier, category
+                )
+
+                Db().add_inventory(item)
+
+        return redirect(url_for('view_inventories'))
     else:
-        return render_template('add.html')
+        categories = Db().get_categories()
+        categories = [category['name'] for category in categories]
 
-@app.route("/inventory/get_all", methods=['GET'])
-def get_inventories():
+        suppliers = Db().get_suppliers()
+        suppliers = [supplier['name'] for supplier in suppliers]
+
+        return render_template('add.html', categories=categories, suppliers=suppliers)
+
+@app.route("/inventory", methods=['GET'])
+def view_inventories():
     inventories = Db().get_inventories()
 
-    return json.dumps(inventories)
+    return render_template('inventories.html', items=inventories)
 
 @app.route("/inventory/search", methods=['GET'])
 def search_inventory():

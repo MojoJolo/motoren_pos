@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block head %}
+    <title>Suppliers - Motoren</title>
+    {{ super() }}
+{% endblock %}
+
+{% block body %}
+    {{ super() }}
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Suppliers</h1>
+                <form class="form-horizontal" method="POST" action="{{ url_for('add_supplier') }}">
+                    <div class="form-group">
+                        <label for="supplier-name" class="col-xs-2 control-label">Add supplier:</label>
+                        <div class="col-xs-4">
+                            <input type="text" class="form-control" id="supplier-name" name="name">
+                        </div>
+                        <button type="submit" class="btn btn-default">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-hover table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Supplier ID</th>
+                            <th>Supplier</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    {% for item in items %}
+                        <tr>
+                            <td class="col-md-2">{{ item['id'] }}</td>
+                            <td>{{ item['name'] }}</td>
+                            <td class="col-md-1">
+                                <a href="{{ url_for('delete_supplier', supplier_id=item['id']) }}"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
+                            </td>
+                        <tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
