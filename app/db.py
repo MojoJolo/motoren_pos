@@ -23,9 +23,9 @@ class Db:
 
     def search_inventory(self, q):
         q = "%" + q + "%"
-        query = """SELECT * from inventories where name like %s or description like %s or supplier like %s"""
+        query = """SELECT * from inventories where name like %s or description like %s or supplier like %s or category like %s"""
 
-        self.cursor.execute(query, (q, q, q))
+        self.cursor.execute(query, (q, q, q, q))
         self.db.close()
 
         results = self.cursor.fetchall()
@@ -122,4 +122,26 @@ class Db:
 
         self.db.commit()
         self.db.close()
+
+    def delete_inventory(self, item_id):
+        query = """DELETE FROM inventories WHERE id = %s"""
+
+        self.cursor.execute(query, [item_id])
+
+        self.db.commit()
+        self.db.close()
+
+    def view_transactions(self, date):
+        date = date + "%"
+        query = """SELECT * from transactions
+                    left join sales on transactions.id = transaction_id
+                    left join inventories on inventories.id = inventory_id
+                    where date like %s"""
+
+        self.cursor.execute(query, [date])
+        self.db.close()
+
+        results = self.cursor.fetchall()
+
+        return list(results)
 

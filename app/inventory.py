@@ -51,7 +51,9 @@ def add_inventory():
         suppliers = Db().get_suppliers()
         suppliers = [supplier['name'] for supplier in suppliers]
 
-        return render_template('add.html', categories=categories, suppliers=suppliers)
+        inventories = Db().get_inventories()
+
+        return render_template('add.html', categories=categories, suppliers=suppliers, items=inventories)
 
 @app.route("/inventory", methods=['GET'])
 def view_inventories():
@@ -69,3 +71,9 @@ def search_inventory():
     results = Db().search_inventory(q)
 
     return render_template('search.html', items=results)
+
+@app.route("/inventory/delete/<int:item_id>", methods=['GET'])
+def delete_inventory(item_id):
+    Db().delete_inventory(item_id)
+
+    return redirect(url_for('view_inventories'))

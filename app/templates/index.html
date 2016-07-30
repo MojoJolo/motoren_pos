@@ -21,10 +21,36 @@
                 </form>
             </div>
         </div>
-        <!-- <div class="row">
+        <div class="row">
             <div class="col-xs-12">
+                <h3>{{ date }}</h3>
                 <h2>Transactions today:</h2>
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Quantity</th>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Supplier</th>
+                            <th>Description</th>
+                            <th>Code</th>
+                            <th>Sold</th>
+                        </tr>
+                    </thead>
+                    {% for item in transactions %}
+                        <tr>
+                            <td>{{ item['quantity'] }}</td>
+                            <td>{{ item['name'] }}</td>
+                            <td>{{ item['category'] }}</td>
+                            <td>{{ item['supplier'] }}</td>
+                            <td>{{ item['description'] }}</td>
+                            <td>{{ item['code'] }}</td>
+                            <td>{{ item['actual'] }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+                <strong>Total:</strong> P {{ total }}
             </div>
-        </div> -->
+        </div>
     </div>
 {% endblock %}

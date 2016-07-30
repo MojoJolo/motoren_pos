@@ -16,6 +16,7 @@
                         <tr>
                             <th>Stock</th>
                             <th>Name</th>
+                            <th>Catgory</th>
                             <th>Supplier</th>
                             <th>Description</th>
                             <th>Code</th>
@@ -27,6 +28,7 @@
                         <tr>
                             <td>{{ item['stock'] }}</td>
                             <td class="col-md-2">{{ item['name'] }}</td>
+                            <td class="col-md-2">{{ item['category'] }}</td>
                             <td class="col-md-2">{{ item['supplier'] }}</td>
                             <td>{{ item['description'] }}</td>
                             <td class="col-md-1">{{ item['code'] }}</td>
@@ -35,6 +37,7 @@
                                 <form method="POST" action="{{ url_for('add_sale') }}" class="form-inline">
                                     <input type="hidden" value="{{ item['id'] }}" name="id">
                                     <input type="hidden" value="{{ item['name'] }}" name="name">
+                                    <input type="hidden" value="{{ item['category'] }}" name="category">
                                     <input type="hidden" value="{{ item['description'] }}" name="description">
                                     <input type="hidden" value="{{ item['code'] }}" name="code">
                                     <input type="hidden" value="{{ item['price'] }}" name="price">
