@@ -8,10 +8,6 @@ from db import Db
 @app.route("/inventory/add", methods=['GET', 'POST'])
 def add_inventory():
     if request.method == 'POST':
-        print request.form
-
-        request.form.get('name')
-
         for i in range(0, 5):
             name = request.form.get('name-{}'.format(i))
 
@@ -77,3 +73,50 @@ def delete_inventory(item_id):
     Db().delete_inventory(item_id)
 
     return redirect(url_for('view_inventories'))
+
+@app.route("/inventory/edit/<int:item_id>", methods=['GET', 'POST'])
+def edit_inventory(item_id):
+    if request.method == 'POST':
+        name = request.form.get('name')
+
+        if not name:
+            return "Name is invalid"
+
+        description = request.form.get('description', '')
+        code = request.form.get('code')
+
+        try:
+            price = float(request.form.get('price'))
+        except:
+            return "Price is invalid"
+
+        try:
+            stock = int(request.form.get('stock'))
+        except:
+            return "Stock is invalid"
+
+        supplier = request.form.get('supplier', '')
+        category = request.form.get('category', '')
+
+        if name and code and price and stock and category:
+            item = (
+                name, description, code, stock, price, supplier, category, item_id
+            )
+
+            Db().edit_inventory(item)
+
+        return redirect(url_for('search_inventory', q=name))
+    else:
+        item = Db().view_inventory(item_id)
+
+        categories = Db().get_categories()
+        categories = [category['name'] for category in categories]
+        categories.remove(item['category'])
+
+        suppliers = Db().get_suppliers()
+        suppliers = [supplier['name'] for supplier in suppliers]
+        suppliers.remove(item['supplier'])
+
+        return render_template('edit.html', item=item, suppliers=suppliers, categories=categories)
+
+

@@ -131,6 +131,30 @@ class Db:
         self.db.commit()
         self.db.close()
 
+    def view_inventory(self, item_id):
+        query = """SELECT * FROM inventories WHERE id = %s"""
+
+        self.cursor.execute(query, [item_id])
+        self.db.close()
+
+        return self.cursor.fetchone()
+
+    def edit_inventory(self, item):
+        query = """UPDATE inventories SET
+            name = %s,
+            description = %s,
+            code = %s,
+            stock = %s,
+            price = %s,
+            supplier = %s,
+            category = %s
+            where id = %s"""
+
+        self.cursor.execute(query, item)
+        
+        self.db.commit()
+        self.db.close()
+
     def view_transactions(self, date):
         date = date + "%"
         query = """SELECT * from transactions
