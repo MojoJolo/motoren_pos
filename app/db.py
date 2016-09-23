@@ -157,10 +157,10 @@ class Db:
 
     def view_transactions(self, date):
         date = date + "%"
-        query = """SELECT * from transactions
-                    left join sales on transactions.id = transaction_id
+        query = """SELECT * from sales left join transactions on transactions.id = transaction_id
                     left join inventories on inventories.id = inventory_id
-                    where date like %s"""
+                    where date like %s
+                    and inventories.id is not NULL"""
 
         self.cursor.execute(query, [date])
         self.db.close()
@@ -168,4 +168,29 @@ class Db:
         results = self.cursor.fetchall()
 
         return list(results)
+
+    def delete_sale(self, sale_id):
+        query = """DELETE FROM sales WHERE id = %s"""
+
+        self.cursor.execute(query, [sale_id])
+
+        self.db.commit()
+        self.db.close()
+
+    def add_return(self, item_id, quantity, date):
+        query = """INSERT INTO  returns (inventory_id, quantity, date) VALUES (%s, %s, %s)"""
+
+        self.cursor.execute(query, (item_id, quantity, date))
+
+        self.db.commit()
+        self.db.close()
+
+    def add_item_quantity(self, item_id, quantity):
+        query = """UPDATE inventories SET stock = stock + %s where id = %s"""
+
+        self.cursor.execute(query, (quantity, item_id))
+        
+        self.db.commit()
+        self.db.close()
+
 

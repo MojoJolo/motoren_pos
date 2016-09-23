@@ -63,3 +63,15 @@ def checkout():
 
     return redirect(url_for('index'))
 
+@app.route("/transaction/view/<date>", methods=['GET'])
+def view_transaction(date):
+    date = arrow.get(date, "MMMM DD, YYYY")
+
+    transactions = Db().view_transactions(date.format("YYYY-MM-DD"))
+    total = sum([transaction['actual'] for transaction in transactions])
+
+    prev_dates = arrow.Arrow.range('day', date.replace(days=-7), date)
+    prev_dates = [prev_date.format("MMMM DD, YYYY") for prev_date in prev_dates]
+
+    return render_template('transactions.html', transactions=transactions, total=total, date=date.format("MMMM DD, YYYY"), prev_dates=prev_dates)
+

@@ -60,6 +60,14 @@ def add_sale():
     else:
         return "[Error Sale#30] This shouldn't happen. Conctact Jolo."
 
+@app.route("/sale/return/<int:sale_id>/<int:item_id>/<int:quantity>/<date>", methods=['GET'])
+def return_sale(sale_id, item_id, quantity, date):
+    Db().delete_sale(sale_id)
+    Db().add_return(item_id, quantity, date)
+    Db().add_item_quantity(item_id, quantity)
+
+    return redirect(url_for('index'))
+
 @app.template_filter('total_sale')
 def total_sale(sales):
     return sum([sale['srp'] for sale in sales])
