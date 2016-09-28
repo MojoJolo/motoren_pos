@@ -60,11 +60,29 @@ def add_sale():
     else:
         return "[Error Sale#30] This shouldn't happen. Conctact Jolo."
 
-@app.route("/sale/return/<int:sale_id>/<int:item_id>/<int:quantity>/<date>", methods=['GET'])
-def return_sale(sale_id, item_id, quantity, date):
-    Db().delete_sale(sale_id)
-    Db().add_return(item_id, quantity, date)
-    Db().add_item_quantity(item_id, quantity)
+@app.route("/sale/clear", methods=['GET'])
+def clear_sales():
+    if 'sales' in session:
+        session.pop('sales', None)
+
+    return redirect(url_for('view_sale'))    
+
+@app.route("/sale/return", methods=['POST'])
+def return_sale():
+    sale_id = request.form.get('sale_id')
+    item_id = request.form.get('item_id')
+    quantity = int(request.form.get('quantity'))
+    returnee = int(request.form.get('returnee', 0))
+    date = request.form.get('date')
+
+    if sale_id and item_id and quantity and date and returnee <= quantity:
+        if quantity - returnee == 0:
+            Db().delete_sale(sale_id)
+        else:
+            Db().update_sale(sale_id, quantity, returnee)
+
+        Db().add_return(item_id, returnee, date)
+        Db().add_item_quantity(item_id, returnee)
 
     return redirect(url_for('index'))
 

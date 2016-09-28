@@ -48,7 +48,19 @@
                             <td>{{ item['code'] }}</td>
                             <td>{{ item['actual'] }}</td>
                             <td class="col-md-1">
-                                <a href="{{ url_for('return_sale', sale_id=item['id'], item_id=item['inventories.id'], quantity=item['quantity'], date=item['date']) }}" onclick="return confirm('Are you sure?')" class="btn btn-default" href="#" role="button">Return</a>
+                                <form method="POST" action="{{ url_for('return_sale') }}" class="form-inline">
+                                    <input type="hidden" value="{{ item['id'] }}" name="sale_id">
+                                    <input type="hidden" value="{{ item['inventories.id'] }}" name="item_id">
+                                    <input type="hidden" value="{{ item['quantity'] }}" name="quantity">
+                                    <input type="hidden" value="{{ item['date'] }}" name="date">
+
+                                    <div class="form-group">
+                                        <label>Quantity:</label>
+                                        <input type="text" class="form-control" name="returnee" value="1" size="5">
+                                    </div>
+
+                                    <button class="btn btn-default" type="submit" onclick="return confirm('Are you sure?')">Return</button>
+                                </form>
                             </td>
                         </tr>
                     {% endfor %}

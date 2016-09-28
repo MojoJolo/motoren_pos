@@ -177,6 +177,19 @@ class Db:
         self.db.commit()
         self.db.close()
 
+    def update_sale(self, sale_id, quantity, returnee):
+        divisor = 1.0 * (quantity - returnee) / quantity
+
+        query = """UPDATE sales SET quantity = %s,
+            price = price * %s,
+            actual = actual * %s
+            where id = %s"""
+
+        self.cursor.execute(query, (quantity - returnee, divisor, divisor, sale_id))
+        
+        self.db.commit()
+        self.db.close()
+
     def add_return(self, item_id, quantity, date):
         query = """INSERT INTO  returns (inventory_id, quantity, date) VALUES (%s, %s, %s)"""
 
