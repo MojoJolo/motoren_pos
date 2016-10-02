@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block head %}
+    <title>Welcome!</title>
+    {{ super() }}
+{% endblock %}
+
+{% block body %}
+    {{ super() }}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <h2>Transactions for {{ month }}:</h2>
+                <strong>Total:</strong> P {{ total }}
+                <br>
+                <strong>Code Total:</strong> P {{ code_total }}
+                <br>
+                <strong>Gain:</strong> {{ gain }}%
+                <br>
+                <strong>Profit:</strong> {{ profit }}
+                <br>
+                <br>
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Quantity</th>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Supplier</th>
+                            <th>Description</th>
+                            <th>Code</th>
+                            <th>Sold</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    {% for item in transactions %}
+                        <tr>
+                            <td>{{ item['quantity'] }}</td>
+                            <td>{{ item['name'] }}</td>
+                            <td>{{ item['category'] }}</td>
+                            <td>{{ item['supplier'] }}</td>
+                            <td>{{ item['description'] }}</td>
+                            <td>{{ item['code'] }}</td>
+                            <td>{{ item['actual'] }}</td>
+                            <td class="col-md-1">
+                                <a href="{{ url_for('return_sale', sale_id=item['id'], item_id=item['inventories.id'], quantity=item['quantity'], date=item['date']) }}" onclick="return confirm('Are you sure?')" class="btn btn-default" href="#" role="button">Return</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

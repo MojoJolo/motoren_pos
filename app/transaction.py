@@ -4,6 +4,8 @@ from app import app
 import json
 import arrow
 from db import Db
+from settings import CODE
+from utils import convert_code
 
 @app.route("/transaction/checkout", methods=['POST'])
 def checkout():
@@ -75,3 +77,21 @@ def view_transaction(date):
 
     return render_template('transactions.html', transactions=transactions, total=total, date=date.format("MMMM DD, YYYY"), prev_dates=prev_dates)
 
+@app.route("/transaction/monthly/<month>", methods=['GET'])
+def view_monthly(month):
+    date = arrow.get(month, "MMMM YYYY")
+
+    transactions = Db().view_transactions(date.format("YYYY-MM"))
+
+    total = sum([transaction['actual'] for transaction in transactions])
+    code_total = sum([convert_code(transaction['code']) for transaction in transactions])
+    profit = float(total) - code_total
+    gain = profit / code_total * 100
+    gain = round(gain, 2)
+
+    prev_dates = arrow.Arrow.range('day', date.replace(days=-7), date)
+    prev_dates = [prev_date.format("MMMM DD, YYYY") for prev_date in prev_dates]
+
+    return render_template('monthly.html', transactions=transactions,
+        total=total, month=date.format("MMMM YYYY"),
+        code_total=code_total, gain=gain, profit=profit)
