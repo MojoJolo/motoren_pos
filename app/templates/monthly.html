@@ -30,7 +30,6 @@
                             <th>Description</th>
                             <th>Code</th>
                             <th>Sold</th>
-                            <th></th>
                         </tr>
                     </thead>
                     {% for item in transactions %}
@@ -42,9 +41,6 @@
                             <td>{{ item['description'] }}</td>
                             <td>{{ item['code'] }}</td>
                             <td>{{ item['actual'] }}</td>
-                            <td class="col-md-1">
-                                <a href="{{ url_for('return_sale', sale_id=item['id'], item_id=item['inventories.id'], quantity=item['quantity'], date=item['date']) }}" onclick="return confirm('Are you sure?')" class="btn btn-default" href="#" role="button">Return</a>
-                            </td>
                         </tr>
                     {% endfor %}
                 </table>
