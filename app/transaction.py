@@ -84,7 +84,7 @@ def view_monthly(month):
     transactions = Db().view_transactions(date.format("YYYY-MM"))
 
     total = sum([transaction['actual'] for transaction in transactions])
-    code_total = sum([convert_code(transaction['code']) for transaction in transactions])
+    code_total = sum([transaction['quantity'] * convert_code(transaction['code']) for transaction in transactions])
     profit = float(total) - code_total
     gain = profit / code_total * 100
     gain = round(gain, 2)
