@@ -15,6 +15,7 @@ def add_sale():
     name = request.form.get('name')
     description = request.form.get('description', '')
     code = request.form.get('code')
+    query = request.form.get('query')
 
     try:
         price = float(request.form.get('price'))
@@ -56,7 +57,7 @@ def add_sale():
 
         session['sales'][item_id] = sale
 
-        return redirect(url_for('view_sale'))
+        return redirect(url_for('search_inventory', q=query))
     else:
         return "[Error Sale#30] This shouldn't happen. Conctact Jolo."
 
