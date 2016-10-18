@@ -56,6 +56,7 @@ def add_sale():
         }
 
         session['sales'][item_id] = sale
+        session.modified = True
 
         return redirect(url_for('search_inventory', q=query))
     else:
