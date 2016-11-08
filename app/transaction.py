@@ -45,6 +45,7 @@ def checkout():
             quantity,
             price,
             actual,
+            session['user']
         )
 
         inventory = (

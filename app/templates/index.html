@@ -35,6 +35,7 @@
                             <th>Description</th>
                             <th>Code</th>
                             <th>Sold</th>
+                            <th>Store</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -47,6 +48,7 @@
                             <td>{{ item['description'] }}</td>
                             <td>{{ item['code'] }}</td>
                             <td>{{ item['actual'] }}</td>
+                            <td>{{ item['user'] }}</td>
                             <td class="col-md-1">
                                 <form method="POST" action="{{ url_for('return_sale') }}" class="form-inline">
                                     <input type="hidden" value="{{ item['id'] }}" name="sale_id">

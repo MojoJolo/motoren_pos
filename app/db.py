@@ -57,8 +57,8 @@ class Db:
         return transaction_id
 
     def add_sales(self, sales):
-        query = """INSERT INTO sales (inventory_id, quantity, price, actual, transaction_id)
-                    VALUES (%s, %s, %s, %s, %s)"""
+        query = """INSERT INTO sales (inventory_id, quantity, price, actual, user, transaction_id)
+                    VALUES (%s, %s, %s, %s, %s, %s)"""
 
         self.cursor.executemany(query, sales)
         self.db.commit()
