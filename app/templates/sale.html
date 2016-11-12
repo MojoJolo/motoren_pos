@@ -14,6 +14,9 @@
                 <h1>Current Transaction</h1>
                 <a href="{{ url_for('clear_sales') }}">clear transaction</a>
                 <form method="POST" action="{{ url_for('checkout') }}">
+                    <br>
+                    <input type="date" name="date">
+                    <br><br>
                     <table class="table table-hover table-bordered">
                         <thead>
                             <tr>

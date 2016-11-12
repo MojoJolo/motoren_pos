@@ -42,11 +42,9 @@ class Db:
 
         return list(results)
 
-    def add_transaction(self, srp_total, selling_total):
+    def add_transaction(self, srp_total, selling_total, datetime):
         query = """INSERT INTO transactions (date, total, actual)
                     VALUES (%s, %s, %s)"""
-
-        datetime = arrow.now().format('YYYY-MM-DD HH:mm:ss')
 
         self.cursor.execute(query, (datetime, srp_total, selling_total))
         transaction_id = self.cursor.lastrowid
