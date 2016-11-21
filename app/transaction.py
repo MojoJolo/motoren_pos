@@ -51,7 +51,7 @@ def checkout():
             quantity,
             price,
             actual,
-            session['user']
+            session.get('user', 'Paco Roman')
         )
 
         inventory = (
