@@ -107,14 +107,40 @@ def view_monthly(month):
     transactions = Db().view_transactions(date.format("YYYY-MM"))
 
     total = sum([transaction['actual'] for transaction in transactions])
-    code_total = sum([transaction['quantity'] * convert_code(transaction['code']) for transaction in transactions])
-    profit = float(total) - code_total
-    gain = profit / code_total * 100
-    gain = round(gain, 2)
+
+    paco_roman_transactions = []
+    gen_tinio_transactions = []
+
+    for transaction in transactions:
+        if transaction['user'] == 'Paco Roman':
+            paco_roman_transactions.append(transaction)
+        else:
+            gen_tinio_transactions.append(transaction)
+
+    paco_roman_total = sum([transaction['actual'] for transaction in paco_roman_transactions])
+    paco_roman_code_total = sum([transaction['quantity'] * convert_code(transaction['code']) for transaction in paco_roman_transactions])
+    paco_roman_profit = float(paco_roman_total) - paco_roman_code_total
+    paco_roman_gain = paco_roman_profit / paco_roman_code_total * 100
+    paco_roman_gain = round(paco_roman_gain, 2)
+
+    gen_tinio_total = sum([transaction['actual'] for transaction in gen_tinio_transactions])
+    gen_tinio_code_total = sum([transaction['quantity'] * convert_code(transaction['code']) for transaction in gen_tinio_transactions])
+    gen_tinio_profit = float(gen_tinio_total) - gen_tinio_code_total
+    gen_tinio_gain = gen_tinio_profit / gen_tinio_code_total * 100
+    gen_tinio_gain = round(gen_tinio_gain, 2)
+
+    # profit = float(total) - code_total
+    # gain = profit / code_total * 100
+    # gain = round(gain, 2)
 
     prev_dates = arrow.Arrow.range('day', date.replace(days=-7), date)
     prev_dates = [prev_date.format("MMMM DD, YYYY") for prev_date in prev_dates]
 
-    return render_template('monthly.html', transactions=transactions,
+    return render_template('monthly.html',
+        paco_roman_transactions=paco_roman_transactions, gen_tinio_transactions=gen_tinio_transactions,
         total=total, month=date.format("MMMM YYYY"),
-        code_total=code_total, gain=gain, profit=profit)
+        paco_roman_total=paco_roman_total, paco_roman_code_total=paco_roman_code_total,
+        paco_roman_profit=paco_roman_profit, paco_roman_gain=paco_roman_gain,
+        gen_tinio_total=gen_tinio_total, gen_tinio_code_total=gen_tinio_code_total,
+        gen_tinio_profit=gen_tinio_profit, gen_tinio_gain=gen_tinio_gain)
+        # code_total=code_total, gain=gain, profit=profit)

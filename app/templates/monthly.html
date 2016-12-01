@@ -10,16 +10,30 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-12">
-                <h2>Transactions for {{ month }}:</h2>
-                <strong>Total:</strong> P {{ total }}
+                <h3>{{ month }}</h3>
+                <h2>Paco Roman:</h2>
+                <strong>Total:</strong> P {{ paco_roman_total }}
                 <br>
-                <strong>Code Total:</strong> P {{ code_total }}
+                <strong>Code Total:</strong> P {{ paco_roman_code_total }}
                 <br>
-                <strong>Gain:</strong> {{ gain }}%
+                <strong>Gain:</strong> {{ paco_roman_gain }}%
                 <br>
-                <strong>Profit:</strong> {{ profit }}
+                <strong>Profit:</strong> {{ paco_roman_profit }}
+
+                <h2>Gen. Tinio:</h2>
+                <strong>Total:</strong> P {{ gen_tinio_total }}
                 <br>
+                <strong>Code Total:</strong> P {{ gen_tinio_code_total }}
                 <br>
+                <strong>Gain:</strong> {{ gen_tinio_gain }}%
+                <br>
+                <strong>Profit:</strong> {{ gen_tinio_profit }}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <h2>Paco Roman Transactions for {{ month }}:</h2>
                 <table class="table table-striped table-bordered table-hover">
                     <thead>
                         <tr>
@@ -32,7 +46,37 @@
                             <th>Sold</th>
                         </tr>
                     </thead>
-                    {% for item in transactions %}
+                    {% for item in paco_roman_transactions %}
+                        <tr>
+                            <td>{{ item['quantity'] }}</td>
+                            <td>{{ item['name'] }}</td>
+                            <td>{{ item['category'] }}</td>
+                            <td>{{ item['supplier'] }}</td>
+                            <td>{{ item['description'] }}</td>
+                            <td>{{ item['code'] }}</td>
+                            <td>{{ item['actual'] }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <h2>Gen. Tinio Transactions for {{ month }}:</h2>
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Quantity</th>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Supplier</th>
+                            <th>Description</th>
+                            <th>Code</th>
+                            <th>Sold</th>
+                        </tr>
+                    </thead>
+                    {% for item in gen_tinio_transactions %}
                         <tr>
                             <td>{{ item['quantity'] }}</td>
                             <td>{{ item['name'] }}</td>
