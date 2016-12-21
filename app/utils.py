@@ -2,6 +2,9 @@
 from settings import CODE
 
 def convert_code(item_code):
+    if item_code == None:
+        return 0.0
+
     item_code = item_code.upper()
     price = "0"
 

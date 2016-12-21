@@ -158,7 +158,9 @@ class Db:
         query = """SELECT * from sales left join transactions on transactions.id = transaction_id
                     left join inventories on inventories.id = inventory_id
                     where date like %s
-                    and sales.id is not NULL order by sales.id desc"""
+                    and sales.id is not NULL
+                    and inventories.id is not NULL
+                    order by sales.id desc"""
 
         self.cursor.execute(query, [date])
         self.db.close()
