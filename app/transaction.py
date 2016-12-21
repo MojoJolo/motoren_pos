@@ -75,6 +75,7 @@ def checkout():
 @app.route("/transaction/view/<date>", methods=['GET'])
 def view_transaction(date):
     date = arrow.get(date, "MMMM DD, YYYY")
+    show = request.args.get('show', 'no')
 
     transactions = Db().view_transactions(date.format("YYYY-MM-DD"))
     total = sum([transaction['actual'] for transaction in transactions])
@@ -118,7 +119,8 @@ def view_transaction(date):
         paco_roman_profit=paco_roman_profit, paco_roman_gain=paco_roman_gain,
         gen_tinio_total=gen_tinio_total, gen_tinio_code_total=gen_tinio_code_total,
         gen_tinio_profit=gen_tinio_profit, gen_tinio_gain=gen_tinio_gain,
-        date=date.format("MMMM DD, YYYY"), prev_dates=prev_dates)
+        date=date.format("MMMM DD, YYYY"), prev_dates=prev_dates,
+        show=show)
 
 @app.route("/transaction/monthly/<month>", methods=['GET'])
 def view_monthly(month):
