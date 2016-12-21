@@ -86,7 +86,7 @@ def return_sale():
         Db().add_return(item_id, returnee, date)
         Db().add_item_quantity(item_id, returnee)
 
-    return redirect(url_for('index'))
+    return redirect(request.referrer or url_for('index'))
 
 @app.template_filter('total_sale')
 def total_sale(sales):

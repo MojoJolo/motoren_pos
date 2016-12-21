@@ -54,8 +54,9 @@ def add_inventory():
 @app.route("/inventory", methods=['GET'])
 def view_inventories():
     inventories = Db().get_inventories()
+    no_stocks = Db().get_no_stocks()
 
-    return render_template('inventories.html', items=inventories)
+    return render_template('inventories.html', items=inventories, no_stocks=no_stocks)
 
 @app.route("/inventory/search", methods=['GET'])
 def search_inventory():

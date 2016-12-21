@@ -10,6 +10,51 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
+                <h5>Current Transaction (Go to "View Current Transaction" to checkout)</h5>
+                <table class="table table-hover table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Item ID</th>
+                            <th>Name</th>
+                            <th>Supplier</th>
+                            <th>Description</th>
+                            <th>Code</th>
+                            <th>Current stock</th>
+                            <th>Quantity</th>
+                            <th>SRP</th>
+                            <th>Selling Price</th>
+                        </tr>
+                    </thead>
+                    {% if 'sales' in session %}
+                        {% for item in session['sales'].values() %}
+                            <tr>
+                                <td>{{ item['item_id'] }}</td>
+                                <td>{{ item['name'] }}</td>
+                                <td>{{ item['supplier'] }}</td>
+                                <td>{{ item['description'] }}</td>
+                                <td>{{ item['code'] }}</td>
+                                <td>{{ item['stock'] }}</td>
+                                <td>{{ item['quantity'] }}</td>
+                                <td>
+                                    P {{ item['srp'] }}
+                                    
+                                    (P{{ item['price'] }} each)
+                                </td>
+                                <td>
+                                    <input type="hidden" name="id::{{ loop.index0 }}" value="{{ item['item_id'] }}">
+                                    <input type="hidden" name="stock::{{ loop.index0 }}" value="{{ item['stock'] }}">
+                                    <input type="hidden" name="quantity::{{ loop.index0 }}" value="{{ item['quantity'] }}">
+                                    <input type="hidden" name="price::{{ loop.index0 }}" value="{{ item['srp'] }}">
+                                    <input class="prices" name="actual::{{ loop.index0 }}" type="text" size="10" value="{{ item['srp'] }}">
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
                 <h2>Search Results:</h2>
                 <table class="table table-hover table-bordered table-striped">
                     <thead>

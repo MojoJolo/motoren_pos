@@ -10,6 +10,29 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-12">
+                <h3>{{ month }}</h3>
+                <h2>Paco Roman:</h2>
+                <strong>Total:</strong> P {{ paco_roman_total }}
+                <br>
+                <strong>Code Total:</strong> P {{ paco_roman_code_total }}
+                <br>
+                <strong>Gain:</strong> {{ paco_roman_gain }}%
+                <br>
+                <strong>Profit:</strong> {{ paco_roman_profit }}
+
+                <h2>Gen. Tinio:</h2>
+                <strong>Total:</strong> P {{ gen_tinio_total }}
+                <br>
+                <strong>Code Total:</strong> P {{ gen_tinio_code_total }}
+                <br>
+                <strong>Gain:</strong> {{ gen_tinio_gain }}%
+                <br>
+                <strong>Profit:</strong> {{ gen_tinio_profit }}
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-xs-12">
                 <h2>Paco Roman Transactions for {{ date }}:</h2>
                 <table class="table table-striped table-bordered table-hover">
                     <thead>

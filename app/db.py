@@ -78,7 +78,7 @@ class Db:
         self.db.close()
 
     def get_categories(self):
-        query = """SELECT * from categories"""
+        query = """SELECT * from categories order by name"""
 
         self.cursor.execute(query)
         self.db.close()
@@ -104,7 +104,7 @@ class Db:
         self.db.close()
 
     def get_suppliers(self):
-        query = """SELECT * from suppliers"""
+        query = """SELECT * from suppliers order by name"""
 
         self.cursor.execute(query)
         self.db.close()
@@ -161,6 +161,16 @@ class Db:
                     and inventories.id is not NULL order by inventories.id desc"""
 
         self.cursor.execute(query, [date])
+        self.db.close()
+
+        results = self.cursor.fetchall()
+
+        return list(results)
+
+    def get_no_stocks(self):
+        query = """SELECT * from inventories where stock = 0"""
+
+        self.cursor.execute(query)
         self.db.close()
 
         results = self.cursor.fetchall()
