@@ -37,24 +37,20 @@
                 <table class="table table-striped table-bordered table-hover">
                     <thead>
                         <tr>
-                            <th>Quantity</th>
-                            <th>Name</th>
-                            <th>Category</th>
-                            <th>Supplier</th>
-                            <th>Description</th>
-                            <th>Code</th>
-                            <th>Sold</th>
+                            <th>Date</th>
+                            <th>Total</th>
+                            <th>Code Total</th>
+                            <th>Profit</th>
+                            <th>Gain</th>
                         </tr>
                     </thead>
-                    {% for item in paco_roman_transactions %}
+                    {% for date, per_day in paco_roman_per_day.items() %}
                         <tr>
-                            <td>{{ item['quantity'] }}</td>
-                            <td>{{ item['name'] }}</td>
-                            <td>{{ item['category'] }}</td>
-                            <td>{{ item['supplier'] }}</td>
-                            <td>{{ item['description'] }}</td>
-                            <td>{{ item['code'] }}</td>
-                            <td>{{ item['actual'] }}</td>
+                            <td>{{ date }}</td>
+                            <td>P {{ per_day['total'] }}</td>
+                            <td>P {{ per_day['code_total'] }}</td>
+                            <td>P {{ per_day['profit'] }}</td>
+                            <td>{{ per_day['gain'] }}%</td>
                         </tr>
                     {% endfor %}
                 </table>
@@ -63,28 +59,24 @@
 
         <div class="row">
             <div class="col-xs-12">
-                <h2>Gen. Tinio Transactions for {{ month }}:</h2>
+                <h2>General Tinio Transactions for {{ month }}:</h2>
                 <table class="table table-striped table-bordered table-hover">
                     <thead>
                         <tr>
-                            <th>Quantity</th>
-                            <th>Name</th>
-                            <th>Category</th>
-                            <th>Supplier</th>
-                            <th>Description</th>
-                            <th>Code</th>
-                            <th>Sold</th>
+                            <th>Date</th>
+                            <th>Total</th>
+                            <th>Code Total</th>
+                            <th>Profit</th>
+                            <th>Gain</th>
                         </tr>
                     </thead>
-                    {% for item in gen_tinio_transactions %}
+                    {% for date, per_day in gen_tinio_per_day.items() %}
                         <tr>
-                            <td>{{ item['quantity'] }}</td>
-                            <td>{{ item['name'] }}</td>
-                            <td>{{ item['category'] }}</td>
-                            <td>{{ item['supplier'] }}</td>
-                            <td>{{ item['description'] }}</td>
-                            <td>{{ item['code'] }}</td>
-                            <td>{{ item['actual'] }}</td>
+                            <td>{{ date }}</td>
+                            <td>P {{ per_day['total'] }}</td>
+                            <td>P {{ per_day['code_total'] }}</td>
+                            <td>P {{ per_day['profit'] }}</td>
+                            <td>{{ per_day['gain'] }}%</td>
                         </tr>
                     {% endfor %}
                 </table>
