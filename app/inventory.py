@@ -117,11 +117,17 @@ def edit_inventory(item_id):
 
         categories = Db().get_categories()
         categories = [category['name'] for category in categories]
-        categories.remove(item['category'])
+        try:
+            categories.remove(item['category'])
+        except:
+            pass
 
         suppliers = Db().get_suppliers()
         suppliers = [supplier['name'] for supplier in suppliers]
-        suppliers.remove(item['supplier'])
+        try:
+            suppliers.remove(item['supplier'])
+        except:
+            pass
 
         return render_template('edit.html', item=item, suppliers=suppliers, categories=categories)
 
