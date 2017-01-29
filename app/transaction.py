@@ -12,6 +12,7 @@ import collections
 def checkout():
     sales = []
     inventories = []
+    user = session.get('user', 'Paco Roman')
 
     datetime = request.form.get('date')
     if datetime == '':
@@ -52,7 +53,7 @@ def checkout():
             quantity,
             price,
             actual,
-            session.get('user', 'Paco Roman')
+            user
         )
 
         inventory = (
@@ -68,6 +69,11 @@ def checkout():
 
     Db().add_sales(sales)
     Db().update_inventory(inventories)
+
+    if user == 'Paco Roman':
+        Db().update_paco_roman_transfer_inventory(item_id, quantity)
+    else:
+        Db().update_gen_tinio_transfer_inventory(item_id, quantity)
 
     session.pop('sales', None)
 

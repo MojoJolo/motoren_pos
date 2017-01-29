@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block head %}
+    <title>Transfers - Motoren</title>
+    {{ super() }}
+{% endblock %}
+
+{% block body %}
+    {{ super() }}
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h3>{{ date }}</h3>
+                Previous dates: 
+                {% for date in prev_dates %}
+                    <a href="{{ url_for('view_transfers_by_date', date=date) }}">{{ date }}</a>, 
+                {% endfor %}
+                <h2>Transferred to Gen. Tinio </h2>
+                <table class="table table-hover table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Supplier</th>
+                            <th>Description</th>
+                            <th>Code</th>
+                            <th>Price</th>
+                        </tr>
+                    </thead>
+                    {% for item in gen_tinio_transfers %}
+                        <tr>
+                            <td class="col-md-2">
+                                <a href="{{ url_for('edit_inventory', item_id=item['id']) }}">{{ item['name'] }}</a>
+                                <br><br>
+                                Transferred <strong>{{ item ['quantity'] }}</strong> item/s to
+                                <br>
+                                <strong>{{ item['to_user'] }}</strong>
+                            </td>
+                            <td class="col-md-2">{{ item['category'] }}</td>
+                            <td class="col-md-2">{{ item['supplier'] }}</td>
+                            <td>{{ item['description'] }}</td>
+                            <td class="col-md-1">{{ item['code'] }}</td>
+                            <td class="col-md-1">{{ item['price'] }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Transferred to Paco Roman</h2>
+                <table class="table table-hover table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Supplier</th>
+                            <th>Description</th>
+                            <th>Code</th>
+                            <th>Price</th>
+                        </tr>
+                    </thead>
+                    {% for item in paco_roman_transfers %}
+                        <tr>
+                            <td class="col-md-2">
+                                <a href="{{ url_for('edit_inventory', item_id=item['id']) }}">{{ item['name'] }}</a>
+                                <br><br>
+                                Transferred <strong>{{ item ['quantity'] }}</strong> item/s to
+                                <br>
+                                <strong>{{ item['to_user'] }}</strong>
+                            </td>
+                            <td class="col-md-2">{{ item['category'] }}</td>
+                            <td class="col-md-2">{{ item['supplier'] }}</td>
+                            <td>{{ item['description'] }}</td>
+                            <td class="col-md-1">{{ item['code'] }}</td>
+                            <td class="col-md-1">{{ item['price'] }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

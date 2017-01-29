@@ -9,3 +9,4 @@ from app import sale
 from app import transaction
 from app import category
 from app import supplier
+from app import transfer

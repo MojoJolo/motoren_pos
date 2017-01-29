@@ -59,9 +59,8 @@
                 <table class="table table-hover table-bordered table-striped">
                     <thead>
                         <tr>
-                            <th>Stock</th>
                             <th>Name</th>
-                            <th>Catgory</th>
+                            <th>Category</th>
                             <th>Supplier</th>
                             <th>Description</th>
                             <th>Code</th>
@@ -72,11 +71,36 @@
                     </thead>
                     {% for item in items %}
                         <tr>
-                            <td>
-                                {{ item['stock'] }}
-                            </td>
                             <td class="col-md-2">
                                 <a href="{{ url_for('edit_inventory', item_id=item['id']) }}">{{ item['name'] }}</a>
+                                <br><br>
+                                <strong>Stock:</strong> {{ item['stock'] }}
+                                {% if item['in_paco_roman'] != None %}
+                                <br>
+                                <sub>In Paco Roman: {{ item['in_paco_roman'] }}</sub>
+                                <br>
+                                <sub>In General Tinio: {{ item['in_gen_tinio'] }}</sub>
+                                {% endif %}
+                                <br><br>
+                                <form method="POST" action="{{ url_for('add_transfer') }}" id="transfer-field-{{ item['id'] }}">
+                                    <strong>Transfer:</strong>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" name="transfer-count" value="">
+                                        <div class="input-group-btn">
+                                            <button type="submit" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">To <span class="caret"></span></button>
+                                            <input type="hidden" name="paco-roman-count" id="paco-roman-count-{{ item['id'] }}" value="{{ item['in_paco_roman'] }}">
+                                            <input type="hidden" name="gen-tinio-count" id="gen-tinio-count-{{ item['id'] }}" value="{{ item['in_gen_tinio'] }}">
+                                            <input type="hidden" name="transfer-to" id="transfer-to-id-{{ item['id'] }}">
+                                            <input type="hidden" name="transfer-id" id="transfer-id-{{ item['id'] }}" value="{{ item['id'] }}">
+                                            <input type="hidden" name="transfer-stock" id="transfer-stock-{{ item['id'] }}" value="{{ item['stock'] }}">
+                                            <input type="hidden" value="{{ q }}" name="query">
+                                            <ul class="dropdown-menu">
+                                                <li><a href="#" onclick="$('#transfer-to-id-{{ item['id'] }}').val('Gen. Tinio'); $('#transfer-field-{{ item['id'] }}').submit()">Gen. Tinio</a></li>
+                                                <li><a href="#" onclick="$('#transfer-to-id-{{ item['id'] }}').val('Paco Roman'); $('#transfer-field-{{ item['id'] }}').submit()">Paco Roman</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </form>
                             </td>
                             <td class="col-md-2">{{ item['category'] }}</td>
                             <td class="col-md-2">{{ item['supplier'] }}</td>
@@ -97,9 +121,13 @@
 
                                     <div class="form-group">
                                         <label>Quantity:</label>
-                                        <input type="text" class="form-control" name="quantity" value="1" size="2">
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" name="quantity">
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-default" type="submit">Add</button>
+                                            </span>
+                                        </div><!-- /input-group -->
                                     </div>
-                                    <button class="btn btn-default" type="submit">Add</button>
                                 </form>
                             </td>
                             <td>

@@ -23,7 +23,15 @@ class Db:
 
     def search_inventory(self, q):
         q = "%" + q + "%"
-        query = """SELECT * from inventories where name like %s or description like %s or supplier like %s or category like %s"""
+        # query = """SELECT inventories.id as id, name, description, code, stock, price, supplier, category,
+        #     COALESCE(in_gen_tinio, 0) as in_gen_tinio, COALESCE(in_paco_roman, 0) as in_paco_roman
+        #     from inventories
+        #     LEFT JOIN transfer_inventories on transfer_inventories.inventory_id = inventories.id
+        #     where name like %s or description like %s or supplier like %s or category like %s"""
+
+        query = """SELECT * from inventories
+            LEFT JOIN transfer_inventories on transfer_inventories.inventory_id = inventories.id
+            where name like %s or description like %s or supplier like %s or category like %s"""
 
         self.cursor.execute(query, (q, q, q, q))
         self.db.close()
@@ -96,7 +104,7 @@ class Db:
         self.db.close()
 
     def add_supplier(self, supplier):
-        query = """INSERT INTO  suppliers (name) VALUES (%s)"""
+        query = """INSERT INTO suppliers (name) VALUES (%s)"""
 
         self.cursor.execute(query, [supplier])
 
@@ -216,4 +224,57 @@ class Db:
         self.db.commit()
         self.db.close()
 
+    def transfer_to_gen_tinio(self, item_id, transfer_count, transfer_stock):
+        query = """INSERT INTO transfer_inventories (inventory_id, in_gen_tinio, in_paco_roman) VALUES (%s, %s, %s)
+                    ON DUPLICATE KEY UPDATE in_gen_tinio = in_gen_tinio + %s, in_paco_roman = in_paco_roman - %s"""
 
+        self.cursor.execute(query, (item_id, transfer_count, transfer_stock - transfer_count, transfer_count, transfer_count))
+
+        self.db.commit()
+        self.db.close()
+
+    def update_paco_roman_transfer_inventory(self, item_id, quantity):
+        query = """UPDATE transfer_inventories SET in_paco_roman = in_paco_roman - %s where inventory_id = %s"""
+
+        self.cursor.execute(query, (quantity, item_id))
+        
+        self.db.commit()
+        self.db.close()
+
+    def update_gen_tinio_transfer_inventory(self, item_id, quantity):
+        query = """UPDATE transfer_inventories SET in_gen_tinio = in_gen_tinio - %s where inventory_id = %s"""
+
+        self.cursor.execute(query, (quantity, item_id))
+        
+        self.db.commit()
+        self.db.close()
+
+    def transfer_to_paco_roman(self, item_id, transfer_count, transfer_stock):
+        query = """INSERT INTO transfer_inventories (inventory_id, in_paco_roman, in_gen_tinio) VALUES (%s, %s, %s)
+                    ON DUPLICATE KEY UPDATE in_paco_roman = in_paco_roman + %s, in_gen_tinio = in_gen_tinio - %s"""
+
+        self.cursor.execute(query, (item_id, transfer_count, transfer_stock - transfer_count, transfer_count, transfer_count))
+
+        self.db.commit()
+        self.db.close()
+
+    def log_transfer(self, item_id, transfer_to, transfer_count, datetime):
+        query = """INSERT INTO transfers (inventory_id, quantity, date, to_user) values (%s, %s, %s, %s)"""
+
+        self.cursor.execute(query, (item_id, transfer_count, datetime, transfer_to))
+
+        self.db.commit()
+        self.db.close()
+
+    def get_transfers(self, date, to_user):
+        date = date + "%"
+        query = """SELECT * from transfers
+                    left join inventories on transfers.inventory_id = inventories.id
+                    where date like %s and to_user = %s"""
+
+        self.cursor.execute(query, (date, to_user))
+        self.db.close()
+
+        results = self.cursor.fetchall()
+
+        return list(results)
