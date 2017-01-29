@@ -76,6 +76,7 @@ def return_sale():
     quantity = int(request.form.get('quantity'))
     returnee = int(request.form.get('returnee', 0))
     date = request.form.get('date')
+    user = session.get('user', 'Paco Roman')
 
     if sale_id and item_id and quantity and date and returnee <= quantity:
         if quantity - returnee == 0:
@@ -85,6 +86,11 @@ def return_sale():
 
         Db().add_return(item_id, returnee, date)
         Db().add_item_quantity(item_id, returnee)
+
+        if user == 'Paco Roman':
+            Db().update_paco_roman_transfer_inventory(item_id, -returnee)
+        else:
+            Db().update_gen_tinio_transfer_inventory(item_id, -returnee)
 
     return redirect(request.referrer or url_for('index'))
 
