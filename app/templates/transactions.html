@@ -61,7 +61,11 @@
                             <td>{{ item['description'] }}</td>
                             <td>{{ item['code'] }}</td>
                             {% if show == 'yes' %}
-                            <td>{{ item['converted_code'] }} x {{ item['quantity'] }} = {{ item['converted_code'] * item['quantity'] }}</td>
+                            <td>
+                                {{ item['converted_code'] }} x {{ item['quantity'] }} = {{ item['converted_code'] * item['quantity'] }}
+                                <br>
+                                {{ item['actual'] - (item['converted_code'] * item['quantity']) }}
+                            </td>
                             {% endif %}
                             <td>{{ item['actual'] }}</td>
                             <td class="col-md-1">
@@ -114,7 +118,11 @@
                             <td>{{ item['description'] }}</td>
                             <td>{{ item['code'] }}</td>
                             {% if show == 'yes' %}
-                            <td>{{ item['converted_code'] }} x {{ item['quantity'] }} = {{ item['converted_code'] * item['quantity'] }}</td>
+                            <td>
+                                {{ item['converted_code'] }} x {{ item['quantity'] }} = {{ item['converted_code'] * item['quantity'] }}
+                                <br>
+                                <sub><strong>Profit: {{ item['actual'] - (item['converted_code'] * item['quantity']) }}</strong></sub>
+                            </td>
                             {% endif %}
                             <td>{{ item['actual'] }}</td>
                             <td class="col-md-1">

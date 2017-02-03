@@ -91,6 +91,7 @@ def view_transaction(date):
     gen_tinio_transactions = []
 
     for transaction in transactions:
+        transaction['actual'] = float(transaction['actual'])
         transaction['converted_code'] = convert_code(transaction['code'])
 
         if transaction['user'] == 'Paco Roman':
