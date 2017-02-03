@@ -64,7 +64,7 @@
                             <td>
                                 {{ item['converted_code'] }} x {{ item['quantity'] }} = {{ item['converted_code'] * item['quantity'] }}
                                 <br>
-                                {{ item['actual'] - (item['converted_code'] * item['quantity']) }}
+                                <sub><strong>Profit: {{ item['actual'] - (item['converted_code'] * item['quantity']) }}</strong></sub>
                             </td>
                             {% endif %}
                             <td>{{ item['actual'] }}</td>
