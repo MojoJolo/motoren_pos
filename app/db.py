@@ -40,6 +40,16 @@ class Db:
 
         return list(results)
 
+    def get_all_inventory(self):
+        query = """SELECT * from inventories"""
+
+        self.cursor.execute(query)
+        self.db.close()
+
+        results = self.cursor.fetchall()
+
+        return list(results)
+
     def get_inventories(self):
         query = """SELECT * from inventories order by id desc limit 50"""
 

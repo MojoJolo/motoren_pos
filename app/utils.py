@@ -22,3 +22,16 @@ def convert_code(item_code):
     price = price[:-2] + "." + price[-2:]
 
     return float(price)
+
+def search(text, text_list):
+    text = set(list(text.lower()))
+
+    search_results = []
+
+    for t in text_list:
+        search_text = set(list(''.join([t['category'], t['description'], t['name']]).lower()))
+
+        if text.issubset(search_text):
+            search_results.append(t)
+
+    return search_results

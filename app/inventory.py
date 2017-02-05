@@ -4,6 +4,7 @@ from app import app
 import json
 import arrow
 from db import Db
+from utils import search
 
 @app.route("/inventory/add", methods=['GET', 'POST'])
 def add_inventory():
@@ -65,7 +66,8 @@ def search_inventory():
     if q == '':
         return redirect(url_for('index'))
 
-    results = Db().search_inventory(q)
+    results = Db().get_all_inventory()
+    results = search(q, results)
 
     return render_template('search.html', items=results, q=q)
 
