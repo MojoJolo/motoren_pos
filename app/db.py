@@ -40,6 +40,22 @@ class Db:
 
         return list(results)
 
+    def search_inventory_2(self, q):
+        q = '+' + '* +'.join(q.split()) + '*'
+
+        print q
+
+        query = """SELECT * from inventories
+                    where match(name, description, category, supplier)
+                    against(%s in boolean mode)"""
+
+        self.cursor.execute(query, [q])
+        self.db.close()
+
+        results = self.cursor.fetchall()
+
+        return list(results)
+
     def get_all_inventory(self):
         query = """SELECT * from inventories"""
 
