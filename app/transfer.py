@@ -66,3 +66,15 @@ def add_transfer():
     Db().log_transfer(item_id, transfer_to, transfer_count, datetime)
 
     return redirect(url_for('search_inventory', q=query))
+
+@app.route("/transfer/reset/<int:item_id>", methods=['GET'])
+def reset_transfer(item_id):
+    Db().reset_transfer(item_id)
+
+    q = request.args.get('q', '')
+
+    if q == '':
+        return redirect(url_for('view_inventories'))
+
+    return redirect(url_for('search_inventory', q=q))
+

@@ -46,7 +46,10 @@
                             </tr>
                         </thead>
                         <tr>
-                            <td class="col-md-1"><input type="number" class="form-control" id="inventory-name" value="{{ item['stock'] }}" name="stock"></td>
+                            <td class="col-md-1">
+                                <input type="number" class="form-control" id="inventory-stock" value="{{ item['stock'] }}" name="stock">
+                                <input type="hidden" id="inventory-stock-prev" value="{{ item['stock'] }}" name="stock-prev">
+                            </td>
                             <td><input type="text" class="form-control" id="inventory-name" value="{{ item['name'] }}" name="name"></td>
                             <td>
                                 <textarea class="form-control" rows="4" id="inventory-description" name="description">{{ item['description'] }}</textarea>

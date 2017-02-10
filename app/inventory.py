@@ -66,8 +66,8 @@ def search_inventory():
     if q == '':
         return redirect(url_for('index'))
 
-    results = Db().get_all_inventory()
-    results = search(q, results)
+    results = Db().search_inventory(q)
+    # results = search(q, results)
 
     return render_template('search.html', items=results, q=q)
 
@@ -85,6 +85,8 @@ def delete_inventory(item_id):
 @app.route("/inventory/edit/<int:item_id>", methods=['GET', 'POST'])
 def edit_inventory(item_id):
     if request.method == 'POST':
+        user = session.get('user', 'Paco Roman')
+
         name = request.form.get('name')
 
         if not name:
@@ -100,6 +102,7 @@ def edit_inventory(item_id):
 
         try:
             stock = int(request.form.get('stock'))
+            stock_prev = int(request.form.get('stock-prev'))
         except:
             return "Stock is invalid"
 
@@ -112,6 +115,14 @@ def edit_inventory(item_id):
             )
 
             Db().edit_inventory(item)
+
+            quantity = stock - stock_prev
+
+            # negative because update db is subtracting it already
+            if user == 'Paco Roman':
+                Db().update_paco_roman_transfer_inventory(item_id, -quantity)
+            else:
+                Db().update_gen_tinio_transfer_inventory(item_id, -quantity)
 
         return redirect(url_for('search_inventory', q=name))
     else:

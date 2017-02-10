@@ -288,3 +288,11 @@ class Db:
         results = self.cursor.fetchall()
 
         return list(results)
+
+    def reset_transfer(self, item_id):
+        query = """DELETE FROM transfer_inventories WHERE inventory_id = %s"""
+
+        self.cursor.execute(query, [item_id])
+
+        self.db.commit()
+        self.db.close()
