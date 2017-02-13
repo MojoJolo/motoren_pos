@@ -66,7 +66,7 @@ def search_inventory():
     if q == '':
         return redirect(url_for('index'))
 
-    results = Db().search_inventory_2(q)
+    results = Db().search_inventory(q)
     # results = search(q, results)
 
     return render_template('search.html', items=results, q=q)

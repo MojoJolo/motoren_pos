@@ -259,6 +259,15 @@ class Db:
         self.db.commit()
         self.db.close()
 
+    def transfer_to_paco_roman(self, item_id, transfer_count, transfer_stock):
+        query = """INSERT INTO transfer_inventories (inventory_id, in_paco_roman, in_gen_tinio) VALUES (%s, %s, %s)
+                    ON DUPLICATE KEY UPDATE in_paco_roman = in_paco_roman + %s, in_gen_tinio = in_gen_tinio - %s"""
+
+        self.cursor.execute(query, (item_id, transfer_count, transfer_stock - transfer_count, transfer_count, transfer_count))
+
+        self.db.commit()
+        self.db.close()
+
     def update_paco_roman_transfer_inventory(self, item_id, quantity):
         query = """UPDATE transfer_inventories SET in_paco_roman = in_paco_roman - %s where inventory_id = %s"""
 
@@ -272,15 +281,6 @@ class Db:
 
         self.cursor.execute(query, (quantity, item_id))
         
-        self.db.commit()
-        self.db.close()
-
-    def transfer_to_paco_roman(self, item_id, transfer_count, transfer_stock):
-        query = """INSERT INTO transfer_inventories (inventory_id, in_paco_roman, in_gen_tinio) VALUES (%s, %s, %s)
-                    ON DUPLICATE KEY UPDATE in_paco_roman = in_paco_roman + %s, in_gen_tinio = in_gen_tinio - %s"""
-
-        self.cursor.execute(query, (item_id, transfer_count, transfer_stock - transfer_count, transfer_count, transfer_count))
-
         self.db.commit()
         self.db.close()
 
