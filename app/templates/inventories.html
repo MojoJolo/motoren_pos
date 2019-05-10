@@ -37,7 +37,7 @@
                             <td>{{ item['code'] }}</td>
                             <td>{{ item['price'] }}</td>
                             <td class="col-md-1">
-                                <a href="#" onclick="delete_inventory()"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
+                                <a href="" onclick="delete_inventory('{{ item['id'] }}', '{{ q }}')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
                             </td>
                         </tr>
                     {% endfor %}
@@ -73,7 +73,7 @@
                             <td>{{ item['code'] }}</td>
                             <td>{{ item['price'] }}</td>
                             <td class="col-md-1">
-                                <a href="#" onclick="delete_inventory()"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
+                                <a href="" onclick="delete_inventory('{{ item['id'] }}', '{{ q }}')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
                             </td>
                         </tr>
                     {% endfor %}
