@@ -1,2 +1,7 @@
 User-agent: *
 Disallow: /
+Disallow: /inventory/
+
+User-agent: Googlebot 
+Disallow: /
+Disallow: /inventory/
