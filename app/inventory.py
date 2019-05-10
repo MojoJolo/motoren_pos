@@ -71,16 +71,18 @@ def search_inventory():
 
     return render_template('search.html', items=results, q=q)
 
-@app.route("/inventory/delete/<int:item_id>", methods=['GET'])
-def delete_inventory(item_id):
-    Db().delete_inventory(item_id)
+@app.route("/inventory/delete", methods=['POST'])
+def delete_inventory():
+    if request.method == 'POST':
+        item_id = request.form.get('item_id', '')
+        Db().delete_inventory(item_id)
 
-    q = request.args.get('q', '')
+        q = request.form.get('q', '')
 
-    if q == '':
-        return redirect(url_for('view_inventories'))
+        if q == '':
+            return redirect(url_for('view_inventories'))
 
-    return redirect(url_for('search_inventory', q=q))
+        return redirect(url_for('search_inventory', q=q))
 
 @app.route("/inventory/edit/<int:item_id>", methods=['GET', 'POST'])
 def edit_inventory(item_id):
