@@ -13,6 +13,14 @@
             if(confirm('Are you sure to delete this item?'))
                 $.post("{{ url_for('delete_inventory') }}", {item_id: item_id, q: q});
         }
+
+        function delete_supplier(supplier_id) {
+            $.post("{{ url_for('delete_supplier') }}", {supplier_id: supplier_id});
+        }
+
+        function delete_category(category_id) {
+            $.post("{{ url_for('delete_category') }}", {category_id: category_id});
+        }
     </script>
     {% endblock %}
 </head>

@@ -37,7 +37,7 @@
                             <td class="col-md-2">{{ item['id'] }}</td>
                             <td>{{ item['name'] }}</td>
                             <td class="col-md-1">
-                                <a href="{{ url_for('delete_category', category_id=item['id']) }}"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
+                                <a href="" onclick="delete_category('{{ item['id'] }}')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
                             </td>
                         </tr>
                     {% endfor %}

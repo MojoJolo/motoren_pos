@@ -24,8 +24,10 @@ def view_suppliers():
 
     return render_template('suppliers.html', items=suppliers)
 
-@app.route("/supplier/delete/<int:supplier_id>", methods=['GET'])
-def delete_supplier(supplier_id):
-    Db().delete_supplier(supplier_id)
+@app.route("/supplier/delete", methods=['POST'])
+def delete_supplier():
+    if request.method == 'POST':
+        supplier_id = request.form.get('supplier_id', '')
+        Db().delete_supplier(supplier_id)
 
-    return redirect(url_for('view_suppliers'))
+        return redirect(url_for('view_suppliers'))

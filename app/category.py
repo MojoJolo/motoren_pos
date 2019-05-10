@@ -24,8 +24,10 @@ def view_categories():
 
     return render_template('categories.html', items=categories)
 
-@app.route("/category/delete/<int:category_id>", methods=['GET'])
-def delete_category(category_id):
-    Db().delete_category(category_id)
+@app.route("/category/delete", methods=['POST'])
+def delete_category():
+    if request.method == 'POST':
+        category_id = request.form.get('category_id', '')
+        Db().delete_category(category_id)
 
-    return redirect(url_for('view_categories'))
+        return redirect(url_for('view_categories'))
